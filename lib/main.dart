@@ -1,6 +1,11 @@
+
 import 'package:flutter/material.dart'; 
+import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
+
  
-void main() { 
+void main()async { 
+  WidgetsFlutterBinding.ensureInitialized();
+  await SendbirdChat.init(appId:"BC823AD1-FBEA-4F08-8F41-CF0D9D280FBF");
   runApp(const ChatWidget()); 
 } 
  
@@ -31,6 +36,29 @@ class ChatScreenWidget extends StatefulWidget {
 } 
  
 class _ChatWidgetState extends State<ChatScreenWidget> { 
+
+  List<BaseMessage> messages = [];
+
+  @override void initState() {
+    super.initState();
+    getMessages();
+  }
+
+  void getMessages() async{
+    final params = MessageListParams()
+    ..inclusive = true
+    ..previousResultSize = 10
+    ..nextResultSize = 0;
+    const url = "https://api-BC823AD1-FBEA-4F08-8F41-CF0D9D280FBF.sendbird.com/v3/open_channels/sendbird_open_channel_14092_bf4075fbb8f12dc0df3ccc5c653f027186ac9211";
+    final channel = await OpenChannel.getChannel("sendbird_open_channel_14092_bf4075fbb8f12dc0df3ccc5c653f027186ac9211");
+    await channel.enter();
+    try{
+       final result = await channel.getMessagesByTimestamp(double.maxFinite.toInt(),params);
+       print(result);
+    }catch(e){
+      print('the error is $e');
+    }
+  }
 
   final List<String> _messages = [ 
     "Hello!", 
