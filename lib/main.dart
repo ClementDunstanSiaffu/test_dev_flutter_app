@@ -38,6 +38,7 @@ class ChatScreenWidget extends StatefulWidget {
 class _ChatWidgetState extends State<ChatScreenWidget> { 
 
   List<BaseMessage> messages = [];
+  bool startTyping = false;
 
   @override void initState() {
     super.initState();
@@ -75,6 +76,9 @@ class _ChatWidgetState extends State<ChatScreenWidget> {
         width:MediaQuery.of(context).size.width*0.8,
         height:50,
         child:TextField(
+          onTap: ()=>setState(() {
+            startTyping = true;
+          }),
           decoration:InputDecoration(
             filled: true,
             fillColor:Colors.transparent,
@@ -91,7 +95,7 @@ class _ChatWidgetState extends State<ChatScreenWidget> {
               margin:const EdgeInsets.symmetric(vertical:8,horizontal:8),
               width:20,
               height:20,
-              decoration:BoxDecoration(color:const Color.fromARGB(255, 235, 69, 124),borderRadius:BorderRadius.circular(40)),
+              decoration:BoxDecoration(color:startTyping ? const Color.fromARGB(255, 235, 69, 124):const Color.fromARGB(166, 158, 158, 158),borderRadius:BorderRadius.circular(40)),
               child:GestureDetector(
                 child:const Icon(Icons.arrow_upward,color:Colors.black,size: 18),
               )
